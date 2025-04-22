@@ -47,3 +47,8 @@ Follow these steps to prepare your data, train your model, and launch the web ap
 
 **Tip:**  
 Improving model fairness and performance for all categories may require experimenting with the above strategies and carefully analyzing your results.
+
+**Note:**  
+The trained model file (`models/classifier.pkl`) is not included in this repository due to GitHub's file size limits.  
+
+To use the application, you must train the model yourself using the instructions above, or download it from a shared link if provided.
