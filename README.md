@@ -29,7 +29,7 @@ Follow these steps to prepare your data, train your model, and launch the web ap
   ```
 
 - **Access the app:**  
-  Open your browser and go to [http://0.0.0.0:3001/](http://0.0.0.0:3001/)
+  Open your browser and go to [http://127.0.0.1:3001](http://127.0.0.1:3001)
 
 ---
 
