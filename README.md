@@ -1,5 +1,18 @@
 # Disaster Response Pipeline Project
 
+## Introduction
+
+This project provides an end-to-end solution for processing, classifying, and visualising disaster response messages. It features:
+- An ETL pipeline for data cleaning and storage
+- A machine learning pipeline for multi-label text classification
+- An interactive web application for message analysis
+
+**Technologies used:**  
+Python, scikit-learn, NLTK, Flask, Plotly, SQLAlchemy
+
+**Project goal:**  
+Help emergency teams quickly categorise and prioritise disaster-related messages for more effective response.
+
 ## Getting Started
 
 Follow these steps to prepare your data, train your model, and launch the web application.
@@ -46,7 +59,7 @@ Follow these steps to prepare your data, train your model, and launch the web ap
 ---
 
 **Tip:**  
-Improving model fairness and performance for all categories may require experimenting with the above strategies and carefully analyzing your results.
+Improving model fairness and performance for all categories may require experimenting with the above strategies and carefully analysing your results.
 
 **Note:**  
 The trained model file (`models/classifier.pkl`) is not included in this repository due to GitHub's file size limits.  
