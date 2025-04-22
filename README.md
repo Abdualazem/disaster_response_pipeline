@@ -1,14 +1,49 @@
 # Disaster Response Pipeline Project
 
-### Instructions:
-1. Run the following commands in the project's root directory to set up your database and model.
+## Getting Started
 
-    - To run ETL pipeline that cleans data and stores in database
-        `python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db`
-    - To run ML pipeline that trains classifier and saves
-        `python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl`
+Follow these steps to prepare your data, train your model, and launch the web application.
 
-2. Run the following command in the app's directory to run your web app.
-    `python run.py`
+### 1. Data Preparation
 
-3. Go to http://0.0.0.0:3001/
+- **Clean and store data in the database:**
+
+  ```sh
+  python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db
+  ```
+
+### 2. Model Training
+
+- **Train the classifier and save the model:**
+
+  ```sh
+  python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl
+  ```
+
+### 3. Launch the Web Application
+
+- **Start the web app from the app directory:**
+
+  ```sh
+  python run.py
+  ```
+
+- **Access the app:**  
+  Open your browser and go to [http://0.0.0.0:3001/](http://0.0.0.0:3001/)
+
+---
+
+## Notes on Model Performance and Improvements
+
+- The dataset contains imbalanced classes for several categories, which can lead to high accuracy but poor performance on less frequent classes.
+- To address this, consider:
+  - Setting `class_weight='balanced'` in your classifier.
+  - Trying alternative algorithms such as logistic regression or gradient boosting.
+  - Using resampling techniques (e.g., SMOTE or random undersampling) to balance the data.
+  - Expanding your grid search to tune more hyperparameters.
+  - Evaluating your model using metrics like precision, recall, and F1-score for each class.
+
+---
+
+**Tip:**  
+Improving model fairness and performance for all categories may require experimenting with the above strategies and carefully analyzing your results.

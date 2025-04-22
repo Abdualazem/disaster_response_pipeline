@@ -2,7 +2,8 @@ import sys
 import pandas as pd
 import re
 import nltk
-nltk.download('punkt')
+#nltk.download('punkt') # Takes a lot of time to download
+nltk.download('punkt_tab')
 nltk.download('stopwords')
 nltk.download('wordnet')
 from sqlalchemy import create_engine
@@ -30,7 +31,8 @@ def load_data(database_filepath):
         category_names (list): List of category names for classification.
     """
     engine = create_engine(f'sqlite:///{database_filepath}')
-    df = pd.read_sql_table('Message', engine)
+    #df = pd.read_sql_table('Message', engine)
+    df = pd.read_sql_table('DisasterResponse', engine)
     X = df['message']
     Y = df.drop(['id', 'message', 'original', 'genre'], axis=1)
     category_names = Y.columns.tolist()
@@ -76,7 +78,7 @@ def build_model():
         'vect__max_df': [1.0],
         'tfidf__use_idf': [True]
     }
-    cv = GridSearchCV(pipeline, param_grid=parameters, verbose=3, n_jobs=-1)
+    cv = GridSearchCV(pipeline, param_grid=parameters, verbose=3, n_jobs=1) # Setting n_jobs=-1 brings error due to paralled processing
     return cv
 
 
@@ -95,7 +97,6 @@ def evaluate_model(model, X_test, Y_test, category_names):
         print(f"Category: {col}")
         print(classification_report(Y_test[col], Y_pred[:, i]))
         print("-" * 60)
-
 
 def save_model(model, model_filepath):
     """

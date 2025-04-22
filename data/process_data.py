@@ -54,7 +54,15 @@ def clean_data(df):
 
 
 def save_data(df, database_filename):
-    pass  
+    """
+    Save cleaned data into a SQLite database.
+
+    Args:
+    df: dataframe. Cleaned data.
+    database_filename: str. Filepath for the output SQLite database.
+    """
+    engine = create_engine(f'sqlite:///{database_filename}')
+    df.to_sql('DisasterResponse', engine, index=False, if_exists='replace')
 
 
 def main():
