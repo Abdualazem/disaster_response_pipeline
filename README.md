@@ -74,5 +74,4 @@ To use the application, you must train the model yourself using the instructions
 
 ## Acknowledgements
 
-This project uses disaster response message data provided by [Appen](https://www.appen.com/) (formerly Figure 8). We would like to thank Appen for making this dataset publicly available, which enabled the development and demonstration of this project.  
-Special thanks to the [Udacity Data Scientist Nanodegree programme](https://www.udacity.com/enrollment/nd025) for project guidance and resources.
+This project uses disaster response message data provided by [Appen](https://www.appen.com/) (formerly Figure 8). We would like to thank Appen for making this dataset publicly available, which enabled the development and demonstration of this project. Special thanks to the [Udacity Data Scientist Nanodegree programme](https://www.udacity.com/enrollment/nd025) for project guidance and resources.
