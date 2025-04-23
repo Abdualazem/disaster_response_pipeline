@@ -8,7 +8,7 @@ from nltk.tokenize import word_tokenize
 from flask import Flask
 from flask import render_template, request, jsonify
 from plotly.graph_objs import Bar
-#from sklearn.externals import joblib # this is not working
+#import joblib
 import joblib
 from sqlalchemy import create_engine
 
@@ -29,23 +29,30 @@ def tokenize(text):
 # load data
 engine = create_engine('sqlite:///../data/DisasterResponse.db')
 df = pd.read_sql_table('DisasterResponse', engine)
+print("DEBUG: Loaded dataframe shape:", df.shape)
+print("DEBUG: Dataframe columns:", df.columns.tolist())
 
 # load model
 model = joblib.load("../models/classifier.pkl")
-
+print("DEBUG: Model loaded successfully.")
 
 # index webpage displays cool visuals and receives user input text for model
 @app.route('/')
 @app.route('/index')
 def index():
-    
     # extract data needed for visuals
-    # TODO: Below is an example - modify to extract data for your own visuals
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
+    print("DEBUG: genre_counts:", genre_counts)
+    print("DEBUG: genre_names:", genre_names)
     
+    # Distribution of message categories (sum of each category column)
+    category_counts = df.iloc[:, 4:].sum().sort_values(ascending=False)
+    category_names = list(category_counts.index)
+    print("DEBUG: category_counts:", category_counts.head())
+    print("DEBUG: category_names:", category_names[:5])
+
     # create visuals
-    # TODO: Below is an example - modify to create your own visuals
     graphs = [
         {
             'data': [
@@ -54,22 +61,36 @@ def index():
                     y=genre_counts
                 )
             ],
-
             'layout': {
                 'title': 'Distribution of Message Genres',
-                'yaxis': {
-                    'title': "Count"
-                },
-                'xaxis': {
-                    'title': "Genre"
-                }
+                'yaxis': {'title': "Count"},
+                'xaxis': {'title': "Genre"}
+            }
+        },
+        {
+            'data': [
+                Bar(
+                    x=category_names,
+                    y=category_counts
+                )
+            ],
+            'layout': {
+                'title': 'Distribution of Message Categories',
+                'yaxis': {'title': "Number of Messages"},
+                'xaxis': {'title': "Category", 'tickangle': -45}
             }
         }
     ]
     
     # encode plotly graphs in JSON
     ids = ["graph-{}".format(i) for i, _ in enumerate(graphs)]
-    graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
+    print("DEBUG: ids:", ids)
+    try:
+        graphJSON = json.dumps(graphs, cls=plotly.utils.PlotlyJSONEncoder)
+        print("DEBUG: graphJSON successfully created.")
+    except Exception as e:
+        print("ERROR: Failed to encode graphJSON:", e)
+        graphJSON = "[]"
     
     # render web page with plotly graphs
     return render_template('master.html', ids=ids, graphJSON=graphJSON)
