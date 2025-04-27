@@ -1,5 +1,7 @@
 import sys
 import pandas as pd
+import matplotlib.pyplot as plt
+import math
 from sqlalchemy import create_engine
 
 
@@ -42,6 +44,10 @@ def clean_data(df):
     # Convert category values to 0 or 1
     for column in categories:
         categories[column] = categories[column].str[-1].astype(int)
+
+    # Drop rows where any category column has a value of 2. It was suggested by the reviewers, and it makes more sense.
+    categories = categories[(categories != 2).all(axis=1)]
+    df = df.loc[categories.index]  # Keep only rows with valid categories
     
     # Replace categories column in df with new category columns
     df = df.drop('categories', axis=1)
@@ -76,6 +82,28 @@ def main():
 
         print('Cleaning data...')
         df = clean_data(df)
+
+        # Plot all category value counts in one canvas
+        category_columns = df.columns[4:]  # Adjust if your first 4 columns are id, message, original, genre
+        n_cols = 4
+        n_rows = math.ceil(len(category_columns) / n_cols)
+        fig, axes = plt.subplots(n_rows, n_cols, figsize=(4*n_cols, 3*n_rows))
+        axes = axes.flatten()
+
+        for i, col in enumerate(category_columns):
+            counts = df[col].value_counts().sort_index()
+            axes[i].bar(counts.index.astype(str), counts.values)
+            axes[i].set_title(col)
+            axes[i].set_xlabel('Value')
+            axes[i].set_ylabel('Count')
+            axes[i].set_xticks([0, 1])
+        # Hide any unused subplots
+        for j in range(i+1, len(axes)):
+            fig.delaxes(axes[j])
+
+        plt.tight_layout()
+        plt.savefig('all_category_value_counts.png')
+        plt.close()
         
         print('Saving data...\n    DATABASE: {}'.format(database_filepath))
         save_data(df, database_filepath)
